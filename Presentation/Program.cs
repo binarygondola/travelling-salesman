@@ -24,8 +24,6 @@ namespace Presentation
 
         Graph G;
         Stack s;
-        Text text;
-        Font font;
 
         RenderWindow window;
 
@@ -52,7 +50,6 @@ namespace Presentation
             window.DispatchEvents();
             window.Clear();
             window.Draw(G);
-            window.Draw(text);
             window.Display();
 
             s = new Stack(new Triple(G));
@@ -66,7 +63,6 @@ namespace Presentation
                 window.DispatchEvents();
                 window.Clear();
                 window.Draw(G);
-                window.Draw(text);
                 window.Display();
             }
         }
@@ -116,7 +112,7 @@ namespace Presentation
                 {
                     G.Vertices[i].OutlineColor = Color.White;
                     G.ColorEdges(G.Vertices[i].Position, Color.White);
-                    text = new Text("Wybrany: " + i, font);
+                    //text = new Text("Wybrany: " + i, font);
                 }
                 else
                 {
