@@ -45,18 +45,7 @@ namespace Presentation
 
             window.SetActive();
 
-            try
-            {
-                font = new Font("FPS.otf");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            text = new Text("Wybrany:", font);
-            text.Color = Color.White;
-
-            G = new Graph(7, 15, 204);
+            G = new Graph(20, 8000, 204);
 
             Matrix m = new Matrix(G.matrix);
 
@@ -70,7 +59,7 @@ namespace Presentation
 
             Console.WriteLine(new Triple(G));
 
-            G.ColorPath(s.Traverse(window, G, text));
+            G.ColorPath(s.Traverse(window, G));
 
             while (window.IsOpen)
             {
@@ -101,7 +90,7 @@ namespace Presentation
                     G.ColorPath(new List<Tuple<int, int>>());
                     G.ColorPathBest(new List<Tuple<int, int>>());
                     Stack s = new Stack(new Triple(G));
-                    G.ColorPath(s.Traverse(window, G, text));
+                    G.ColorPath(s.Traverse(window, G));
                     break;
                 case Keyboard.Key.F6:
                     G = new Graph(15, 50);

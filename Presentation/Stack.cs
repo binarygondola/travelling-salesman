@@ -109,7 +109,7 @@ namespace Presentation
             ret = new List<Tuple<int, int>>();
         }
 
-        public List<Tuple<int, int>> Traverse(RenderWindow w, Graph G, Text t)
+        public List<Tuple<int, int>> Traverse(RenderWindow w, Graph G)
         {
             int counter = 0,
                 substract = 3000,
@@ -133,7 +133,6 @@ namespace Presentation
                     w.DispatchEvents();
                     w.Clear();
                     w.Draw(G);
-                    w.Draw(t);
                     w.Display();
                     counter -= substract;
                     Console.WriteLine(stack.Count);
