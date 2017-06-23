@@ -102,6 +102,8 @@ namespace Presentation
         double min = double.MaxValue;
         List<Tuple<int, int>> ret;
 
+        public bool stop { get; set; }
+
         public Stack(Triple t)
         {
             stack = new Stack<Triple>();
@@ -109,15 +111,43 @@ namespace Presentation
             ret = new List<Tuple<int, int>>();
         }
 
+        //Needs implementation
+        public bool isCoherent()
+        {
+            if (stack != null)
+            {
+                if (stack.Count > 0)
+                {
+                    Triple t = stack.Peek();
+                    bool[] tmp = new bool[t.edges.Count];
+                    for (int i = 0; i < tmp.Length; i++)
+                    {
+                        tmp[i] = false;
+                    }
+                    for (int i = 0; i < t.edges.Count; i++)
+                    {
+
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public List<Tuple<int, int>> Traverse(RenderWindow w, Graph G)
         {
             int counter = 0,
-                substract = 3000,
+                substract = 500,
                 stackMax = 0;
             double max = 0;
+            stop = false;
+
             Triple tripleFromStack;
             while (stack.Count > 0)
             {
+                if (stop)
+                    break;
+
                 counter++;
                 stackMax = stack.Count > stackMax ? stack.Count : stackMax;
 
@@ -135,10 +165,10 @@ namespace Presentation
                     w.Draw(G);
                     w.Display();
                     counter -= substract;
-                    Console.WriteLine(stack.Count);
+                    //Console.WriteLine(stack.Count);
                 }
 
-                //TODO coś z tym trzeba zrobić
+                //TODO smth needs to be done with that mess
                 if (tripleFromStack.matrix.matrix.Count == 3)
                 {
                     tripleFromStack.distance += tripleFromStack.matrix.Reduce();
@@ -168,6 +198,11 @@ namespace Presentation
                             ret = new List<Tuple<int, int>>(tripleFromStack.edges);
                             G.ColorPathBest(ret);
                         }
+                    }
+                    //TODO track this down
+                    else {
+                        Console.WriteLine(tripleFromStack);
+                        G.ColorPath(ret);
                     }
                 }
                 else
@@ -199,17 +234,37 @@ namespace Presentation
                         Right.matrix.BlockEdge(edge);                                           //BLOCKEDGE
 
 
-                        // należy zachować taką kolejność ponieważ to kolejka LIFO
+                        // You should take the left one first from the top of the stack, so it is in that order
                         stack.Push(Right);
                     }
                     stack.Push(Left);
                 }
             }
-            Console.WriteLine("Odległość = " + min.ToString("000"));
-            Console.WriteLine();
-            Console.WriteLine("Ścieżka  = {" + string.Join(",", ret) + "}");
 
+            Console.WriteLine(this);
+            
             return ret;
+        }
+
+        public override string ToString()
+        {
+            if (ret.Count == 0) return "Solution not found";
+            string str = "";
+            str+= "Distance = " + min.ToString("000")+"\r\n";
+            str+= "Path: " + ret[0].Item1 + " -> " + ret[0].Item2;
+            int next = ret[0].Item2;
+
+            for (int i = 0; i < ret.Count; i++)
+            {
+                if (next == ret[i].Item1)
+                {
+                    str+=" -> " + ret[i].Item2;
+                    next = ret[i].Item2;
+                    i = -1;
+                }
+                if (next == ret[0].Item1) break;
+            }
+            return str;
         }
     }
 }

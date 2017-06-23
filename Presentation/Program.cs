@@ -21,6 +21,7 @@ namespace Presentation
     {
         bool dragging = false;
         int dragged = -1;
+        double radius = 16;
 
         Graph G;
         Stack s;
@@ -31,19 +32,21 @@ namespace Presentation
         {
             ContextSettings contextSettings = new ContextSettings();
             contextSettings.DepthBits = 24;
-            window = new RenderWindow(new VideoMode(800, 600), "SFML window", Styles.Default, contextSettings);
+            window = new RenderWindow(new VideoMode(800, 600), "SFML window", Styles.Close, contextSettings);
 
             window.SetVisible(true);
-            window.SetFramerateLimit(60);
+            //oh boy, what a performance boost
+            window.SetFramerateLimit(300);
 
             window.Closed += OnClosed;
             window.MouseMoved += OnMouseMove;
             window.KeyPressed += OnKeyPressed;
             window.MouseButtonPressed += OnMouseClick;
+            window.TextEntered += OnTextEntered;
 
             window.SetActive();
 
-            G = new Graph(20, 8000, 204);
+            G = new Graph(20, 8000);
 
             Matrix m = new Matrix(G.matrix);
 
@@ -56,8 +59,6 @@ namespace Presentation
 
             Console.WriteLine(new Triple(G));
 
-            G.ColorPath(s.Traverse(window, G));
-
             while (window.IsOpen)
             {
                 window.DispatchEvents();
@@ -67,11 +68,18 @@ namespace Presentation
             }
         }
 
-        static bool isInside(double x, double y, SFML.System.Vector2f v2f)
+        static bool isInside(double x, double y, SFML.System.Vector2f v2f, double radius)
         {
             double distance = Math.Pow(Math.Pow(v2f.X - x, 2) + Math.Pow(v2f.Y - y, 2), 0.5);
-            if (distance > 16) return false;
+            if (distance > radius) return false;
             return true;
+        }
+
+
+        //TODO needs implementation
+        private void OnTextEntered(object sender, TextEventArgs e)
+        {
+            Console.WriteLine(e.Unicode);
         }
 
         void OnKeyPressed(object sender, KeyEventArgs e)
@@ -85,14 +93,19 @@ namespace Presentation
                 case Keyboard.Key.F5:
                     G.ColorPath(new List<Tuple<int, int>>());
                     G.ColorPathBest(new List<Tuple<int, int>>());
-                    Stack s = new Stack(new Triple(G));
+                    s = new Stack(new Triple(G));
                     G.ColorPath(s.Traverse(window, G));
                     break;
                 case Keyboard.Key.F6:
-                    G = new Graph(15, 50);
+                    s.stop = true;
+                    G = new Graph(6, 170);
                     Console.Clear();
                     Console.WriteLine(G);
                     s = new Stack(new Triple(G));
+                    break;
+                case Keyboard.Key.F7:
+                    Console.WriteLine("F7");
+                    s.stop = true;
                     break;
                 default:
                     break;
@@ -108,11 +121,10 @@ namespace Presentation
         {
             for (int i = 0; i < G.Vertices.Count; i++)
             {
-                if (isInside(e.X, e.Y, G.Vertices[i].Position))
+                if (isInside(e.X, e.Y, G.Vertices[i].Position, radius))
                 {
                     G.Vertices[i].OutlineColor = Color.White;
                     G.ColorEdges(G.Vertices[i].Position, Color.White);
-                    //text = new Text("Wybrany: " + i, font);
                 }
                 else
                 {
@@ -134,7 +146,7 @@ namespace Presentation
             {
                 for (int i = 0; i < G.Vertices.Count; i++)
                 {
-                    if (isInside(e.X, e.Y, G.Vertices[i].Position))
+                    if (isInside(e.X, e.Y, G.Vertices[i].Position, radius))
                     {
                         dragging = true;
                         dragged = i;

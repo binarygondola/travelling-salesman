@@ -16,7 +16,7 @@ namespace Presentation
 
         public List<List<double>> matrix;
 
-        const uint SIZE = 16;
+        const uint radius = 16;
         int far = 50;
         int inf = -1;
 
@@ -56,7 +56,7 @@ namespace Presentation
 
         }
 
-        //TODO niech ma argument arrayvertex
+        //TODO color the given array
         public void ColorPath(List<Tuple<int, int>> list)
         {
             win.Clear();
@@ -73,7 +73,7 @@ namespace Presentation
             }
         }
 
-        //Tego się pozbyć
+        //TODO get rid of that
         public void ColorPathBest(List<Tuple<int, int>> list)
         {
             best.Clear();
@@ -119,12 +119,12 @@ namespace Presentation
             }
         }
 
-        // tworzenie wierzchołków
+        // generate SFML vertices
         void MakeVertices(int n)
         {
             for (int i = 0; i < n; i++)
             {
-                Vertices.Add(new CircleShape(SIZE, SIZE));
+                Vertices.Add(new CircleShape(radius, radius));
                 int x = r.Next(100, 700), y = r.Next(100, 500);
                 while (Vertices.Exists(v => Distance(new SFML.System.Vector2f(x, y), v.Position) < far))
                 {
@@ -133,13 +133,13 @@ namespace Presentation
                 }
                 Vertices[i].Position = new SFML.System.Vector2f(x, y);
                 Vertices[i].FillColor = Color.Blue;
-                Vertices[i].Origin = new SFML.System.Vector2f(SIZE, SIZE);
+                Vertices[i].Origin = new SFML.System.Vector2f(radius, radius);
                 Vertices[i].OutlineColor = Color.Magenta;
                 Vertices[i].OutlineThickness = 2;
             }
         }
 
-        // generowanie i tworzenie połączeń
+        // generate SFML connections
         void MakeEdges(int m, int n)
         {
             for (int i = 0; i < m; i++)
