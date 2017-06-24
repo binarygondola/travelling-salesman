@@ -9,7 +9,7 @@ namespace Presentation
 {
     class Graph : Drawable
     {
-        public List<CircleShape> Vertices = new List<CircleShape>();
+        public List<Circle> Vertices = new List<Circle>();
         public List<Tuple<int, int>> Edges = new List<Tuple<int, int>>();
         public VertexArray e, win, best;
         Random r;
@@ -124,7 +124,7 @@ namespace Presentation
         {
             for (int i = 0; i < n; i++)
             {
-                Vertices.Add(new CircleShape(radius, radius));
+                Vertices.Add(new Circle(radius, radius, i));
                 int x = r.Next(100, 700), y = r.Next(100, 500);
                 while (Vertices.Exists(v => Distance(new SFML.System.Vector2f(x, y), v.Position) < far))
                 {

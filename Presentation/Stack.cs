@@ -138,7 +138,8 @@ namespace Presentation
         {
             int counter = 0,
                 substract = 500,
-                stackMax = 0;
+                stackMax = 0,
+                wrong = 0;
             double max = 0;
             stop = false;
 
@@ -167,12 +168,21 @@ namespace Presentation
                     counter -= substract;
                     //Console.WriteLine(stack.Count);
                 }
-
                 //TODO smth needs to be done with that mess
                 if (tripleFromStack.matrix.matrix.Count == 3)
                 {
+
                     tripleFromStack.distance += tripleFromStack.matrix.Reduce();
                     tripleFromStack.BlockCycles();
+
+
+                    Tuple<int, int> edge = tripleFromStack.matrix.FindEdge(out max);
+                    if (edge.Item1 == 0 && edge.Item2 == 0)
+                    {
+                        wrong++;
+                        continue;
+                    }
+
                     if (tripleFromStack.matrix.matrix[1][1] == 0 && tripleFromStack.matrix.matrix[2][2] == 0 && tripleFromStack.matrix.matrix[0][1] != tripleFromStack.matrix.matrix[1][0] && tripleFromStack.matrix.matrix[0][2] != tripleFromStack.matrix.matrix[2][0])
                     {
                         tripleFromStack.edges.Add(new Tuple<int, int>((int)tripleFromStack.matrix.matrix[1][0], (int)tripleFromStack.matrix.matrix[0][1]));
@@ -201,8 +211,7 @@ namespace Presentation
                     }
                     //TODO track this down
                     else {
-                        Console.WriteLine(tripleFromStack);
-                        G.ColorPath(ret);
+                        wrong++;
                     }
                 }
                 else
@@ -226,7 +235,7 @@ namespace Presentation
                     Left.BlockCycles();                                                     //BLOCKCYCLES
 
                     //right
-                    if (tripleFromStack.distance + max < min)
+                    if (tripleFromStack.distance + distanceFromStack + max < min)
                     {
                         Triple Right = new Triple(tripleFromStack);
                         Right.distance += distanceFromStack;
@@ -242,6 +251,7 @@ namespace Presentation
             }
 
             Console.WriteLine(this);
+            Console.WriteLine("Wrong: " + wrong);
             
             return ret;
         }

@@ -30,34 +30,11 @@ namespace Presentation
 
         public void StartSFMLProgram()
         {
-            ContextSettings contextSettings = new ContextSettings();
-            contextSettings.DepthBits = 24;
-            window = new RenderWindow(new VideoMode(800, 600), "SFML window", Styles.Close, contextSettings);
-
-            window.SetVisible(true);
-            //oh boy, what a performance boost
-            window.SetFramerateLimit(300);
-
-            window.Closed += OnClosed;
-            window.MouseMoved += OnMouseMove;
-            window.KeyPressed += OnKeyPressed;
-            window.MouseButtonPressed += OnMouseClick;
-            window.TextEntered += OnTextEntered;
-
-            window.SetActive();
-
-            G = new Graph(20, 8000);
-
-            Matrix m = new Matrix(G.matrix);
-
-            window.DispatchEvents();
-            window.Clear();
-            window.Draw(G);
-            window.Display();
-
+            InitializeWindow();
+            AddEvents();
+            
+            G = new Graph(4, 10);
             s = new Stack(new Triple(G));
-
-            Console.WriteLine(new Triple(G));
 
             while (window.IsOpen)
             {
@@ -68,6 +45,21 @@ namespace Presentation
             }
         }
 
+        void InitializeWindow()
+        {
+            window = new RenderWindow(new VideoMode(800, 600), "SFML window", Styles.Close, new ContextSettings() { DepthBits = 24, AntialiasingLevel = 2 });
+            window.SetFramerateLimit(300);
+        }
+
+        void AddEvents()
+        {
+            window.Closed += OnClosed;
+            window.MouseMoved += OnMouseMove;
+            window.KeyPressed += OnKeyPressed;
+            window.TextEntered += OnTextEntered;
+            window.MouseButtonPressed += OnMouseClick;
+        }
+
         static bool isInside(double x, double y, SFML.System.Vector2f v2f, double radius)
         {
             double distance = Math.Pow(Math.Pow(v2f.X - x, 2) + Math.Pow(v2f.Y - y, 2), 0.5);
@@ -75,12 +67,6 @@ namespace Presentation
             return true;
         }
 
-
-        //TODO needs implementation
-        private void OnTextEntered(object sender, TextEventArgs e)
-        {
-            Console.WriteLine(e.Unicode);
-        }
 
         void OnKeyPressed(object sender, KeyEventArgs e)
         {
@@ -98,7 +84,7 @@ namespace Presentation
                     break;
                 case Keyboard.Key.F6:
                     s.stop = true;
-                    G = new Graph(6, 170);
+                    G = new Graph(22, 170);
                     Console.Clear();
                     Console.WriteLine(G);
                     s = new Stack(new Triple(G));
@@ -115,6 +101,12 @@ namespace Presentation
         void OnClosed(object sender, EventArgs e)
         {
             window.Close();
+        }
+
+        //TODO needs implementation
+        private void OnTextEntered(object sender, TextEventArgs e)
+        {
+            Console.WriteLine(e.Unicode);
         }
 
         void OnMouseMove(object sender, MouseMoveEventArgs e)
