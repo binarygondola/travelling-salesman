@@ -32,6 +32,8 @@ namespace Presentation
         {
             InitializeWindow();
             AddEvents();
+
+            Line l = new Line(new SFML.System.Vector2f(100, 100), new SFML.System.Vector2f(10, 100), 20);
             
             G = new Graph(4, 10);
             s = new Stack(new Triple(G));
@@ -41,6 +43,7 @@ namespace Presentation
                 window.DispatchEvents();
                 window.Clear();
                 window.Draw(G);
+                window.Draw(l);
                 window.Display();
             }
         }
