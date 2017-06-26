@@ -19,12 +19,12 @@ namespace Presentation
             tList = new List<Text>();
         }
 
-        public Line(SFML.System.Vector2f x, SFML.System.Vector2f y, int number) :this()
+        public Line(SFML.System.Vector2f x, SFML.System.Vector2f y, float number) :this()
         {
             Append(new Vertex(x));
             Append(new Vertex(y));
 
-            Text tmp = new Text(number.ToString(), f, 20);
+            Text tmp = new Text(number.ToString("000"), f, 20);
             tmp.Color = Color.White;
             tmp.Position = new SFML.System.Vector2f((x.X + y.X) / 2, (x.Y + y.Y) / 2);
             FloatRect ftmp = tmp.GetLocalBounds();
@@ -32,6 +32,21 @@ namespace Presentation
             tList.Add(tmp);
         }
         
+        public void Append2(SFML.System.Vector2f x, SFML.System.Vector2f y, float number)
+        {
+            Append(new Vertex(y));
+            Append(new Vertex(x));
+
+            Text tmp = new Text(number.ToString("000"), f, 20);
+            tmp.Color = Color.White;
+            tmp.Position = new SFML.System.Vector2f((x.X + y.X) / 2, (x.Y + y.Y) / 2);
+            FloatRect ftmp = tmp.GetLocalBounds();
+            tmp.Origin = tmp.Origin + new SFML.System.Vector2f(ftmp.Width / 2 + ftmp.Left, ftmp.Height / 2 + ftmp.Top);
+            tList.Add(tmp);
+        }
+
+
+
         public new void Draw(RenderTarget target, RenderStates states)
         {
             base.Draw(target, states);

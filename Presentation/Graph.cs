@@ -168,6 +168,8 @@ namespace Presentation
                     e[i] = new Vertex(v2f, c);
         }
 
+
+        //TODO can't compare float values..
         public void MoveEdges(SFML.System.Vector2f v2f, SFML.System.Vector2f v2ff)
         {
             for (uint i = 0; i < e.VertexCount; i++)
