@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Presentation
 {
-    class Circle : CircleShape, Drawable
+    class Circle : CircleShape, Drawable, IMoveable
     {
         public int number { get; set; }
         Font f;
@@ -17,7 +17,7 @@ namespace Presentation
         {
             f = new Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\\arial.ttf");
             t = new Text(number.ToString(), f, 30);
-            t.Color = Color.Yellow;
+            t.Color = Color.Black;
         }
 
         public Circle(float r, uint pointCount, int number) : this(number)
@@ -54,5 +54,16 @@ namespace Presentation
             }
         }
 
+
+        public void OnEClicked()
+        {
+            this.FillColor = Color.Green;
+        }
+
+
+        public void OnQClicked()
+        {
+            this.FillColor = Color.Blue;
+        }
     }
 }

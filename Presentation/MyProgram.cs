@@ -72,7 +72,7 @@ namespace Presentation
                 }
 
                 Thread.Sleep(sleepTime);
-                Console.WriteLine(AllTime - watch.ElapsedMilliseconds + " " + AllTime.ToString("000") + " " + watch.ElapsedMilliseconds.ToString("000") + " " + lag.ToString(".000000000"));
+                //Console.WriteLine(AllTime - watch.ElapsedMilliseconds + " " + AllTime.ToString("000") + " " + watch.ElapsedMilliseconds.ToString("000") + " " + lag.ToString(".000000000"));
             }
             Console.Clear();
             Console.WriteLine("WTF: " + wtf);
@@ -94,6 +94,12 @@ namespace Presentation
             {
                 case Keyboard.Key.Escape:
                     done = true;
+                    break;
+                case Keyboard.Key.E:
+                    OnEClicked();
+                    break;
+                case Keyboard.Key.Q:
+                    OnQClicked();
                     break;
             }
         }
