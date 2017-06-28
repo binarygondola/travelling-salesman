@@ -10,6 +10,5 @@ namespace Presentation
     {
         void OnEClicked();
         void OnQClicked();
-
     }
 }

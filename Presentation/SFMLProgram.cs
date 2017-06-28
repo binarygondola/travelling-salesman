@@ -10,8 +10,6 @@ namespace Presentation
 {
     class SFMLProgram
     {
-        double xPocisk = 0;
-        double vPocisku = 100;
         List<Drawable> toDraw;
 
         public SFMLProgram()
@@ -27,15 +25,9 @@ namespace Presentation
 
         public void Update(double dt)
         {
-            xPocisk += (dt / 1000) * vPocisku;
-            ((Circle)toDraw[0]).Position = new SFML.System.Vector2f((float)xPocisk, 0);
-            if (xPocisk >= 500)
+            for (int i = 0; i < toDraw.Count; i++)
             {
-                xPocisk = 0;
-            }
-            if (xPocisk < 0)
-            {
-                xPocisk = 500;
+                ((Updatable)toDraw[i]).Update(dt);
             }
         }
 
@@ -49,13 +41,11 @@ namespace Presentation
 
         public void OnEClicked()
         {
-            vPocisku += 200;
             ((Circle)toDraw[0]).OnEClicked();
         }
 
         public void OnQClicked()
         {
-            vPocisku -= 200;
             ((Circle)toDraw[0]).OnQClicked();
         }
     }
