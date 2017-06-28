@@ -14,6 +14,7 @@ namespace Presentation
     {
         RenderWindow window;
         private bool done;
+        Stopwatch watch;
 
         public MyProgram()
         {
@@ -24,44 +25,27 @@ namespace Presentation
         {
             Initialize();
 
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-
             double fps = 60;
             double msForFrame = 1000 / fps;
 
             double lag = 0;
-            double dt = 0.001;
+            double dt = 0.01;
 
-            double currentTime = watch.ElapsedMilliseconds;
-            
-            double realTime = 0;
-            double frameTime = 0;
-
-            int sleepTime = 0;
-            int wtf = 0;
-            int countFrames = 0;
+            double now = 0, previous = 0, elapsed = 0;
+            int sleeptime = 0;
+            int all = 0;
+            double x = 0;
 
             while (!done)
             {
-                countFrames++;
                 window.DispatchEvents();
 
-                realTime = watch.ElapsedMilliseconds;
+                now = watch.ElapsedMilliseconds;
+                elapsed = now - previous;
+                previous = now;
 
-                //or this
-                frameTime = realTime - currentTime;
-                currentTime = realTime;
+                lag += msForFrame;
 
-                //not sure about this
-                if (frameTime > msForFrame)
-                {
-                    Console.Write(frameTime + " ");
-                    frameTime = msForFrame;
-                    wtf++;
-                }
-
-                lag += frameTime;
 
                 while (lag > dt)
                 {
@@ -69,20 +53,18 @@ namespace Presentation
                     lag -= dt;
                 }
 
+                x = watch.ElapsedMilliseconds - previous;
 
                 window.Clear();
                 Render(window);
                 window.Display();
 
-                sleepTime = (int)frameTime;
+                sleeptime = (int)(msForFrame - x);
+                if (sleeptime < 0) sleeptime = 0;
+                all += sleeptime;
 
-                Thread.Sleep(sleepTime);
-
-
+                Thread.Sleep(sleeptime);
             }
-            Console.Clear();
-            Console.WriteLine("WTF: " + wtf + " frames: " + countFrames );
-            Console.ReadKey();
         }
 
         public void Initialize()
@@ -92,11 +74,14 @@ namespace Presentation
 
             window.Closed += OnClosed;
             window.KeyPressed += OnKeyPressed;
+
+            watch = new Stopwatch();
+            watch.Start();
         }
 
         private void OnKeyPressed(object sender, KeyEventArgs e)
         {
-            switch(e.Code)
+            switch (e.Code)
             {
                 case Keyboard.Key.Escape:
                     done = true;
