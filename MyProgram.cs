@@ -34,33 +34,23 @@ namespace Presentation
             double dt = 0.001;
 
             double currentTime = watch.ElapsedMilliseconds;
-            
+
+            double AllTime = 0;
             double realTime = 0;
             double frameTime = 0;
 
             int sleepTime = 0;
             int wtf = 0;
-            int countFrames = 0;
 
             while (!done)
             {
-                countFrames++;
                 window.DispatchEvents();
 
+                //real time
                 realTime = watch.ElapsedMilliseconds;
 
-                //or this
                 frameTime = realTime - currentTime;
                 currentTime = realTime;
-
-                //not sure about this
-                if (frameTime > msForFrame)
-                {
-                    Console.Write(frameTime + " ");
-                    frameTime = msForFrame;
-                    wtf++;
-                }
-
                 lag += frameTime;
 
                 while (lag > dt)
@@ -69,19 +59,23 @@ namespace Presentation
                     lag -= dt;
                 }
 
-
                 window.Clear();
                 Render(window);
                 window.Display();
+                AllTime += frameTime;
 
-                sleepTime = (int)frameTime;
+                sleepTime = (int)((long)AllTime - watch.ElapsedMilliseconds);
+                if (sleepTime < 0)
+                {
+                    sleepTime = 0;
+                    wtf++;
+                }
 
                 Thread.Sleep(sleepTime);
-
-
+                //Console.WriteLine(AllTime - watch.ElapsedMilliseconds + " " + AllTime.ToString("000") + " " + watch.ElapsedMilliseconds.ToString("000") + " " + lag.ToString(".000000000"));
             }
             Console.Clear();
-            Console.WriteLine("WTF: " + wtf + " frames: " + countFrames );
+            Console.WriteLine("WTF: " + wtf);
             Console.ReadKey();
         }
 

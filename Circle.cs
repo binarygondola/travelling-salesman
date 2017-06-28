@@ -7,33 +7,22 @@ using System.Threading.Tasks;
 
 namespace Presentation
 {
-    class Circle : CircleShape, Drawable, IMoveable, Updatable
+    class Circle : CircleShape, Drawable, IMoveable
     {
-        private double number;
-        public double Number
-        {
-            get { return number; }
-            set {
-                number = value;
-                t = new Text(number.ToString(), f, 30);
-            }
-        }
-
-        double v = 100;
-        double x = 0;
+        public int number { get; set; }
         Font f;
         Text t;
 
-        public Circle(double number)
+        public Circle(int number)
         {
             f = new Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\\arial.ttf");
             t = new Text(number.ToString(), f, 30);
             t.Color = Color.Black;
         }
 
-        public Circle(float r, uint pointCount, double n) : this(n)
+        public Circle(float r, uint pointCount, int number) : this(number)
         {
-            number = n;
+            this.number = number;
             Radius = r;
             SetPointCount(pointCount);
             t.Origin = new SFML.System.Vector2f(-r + t.GetLocalBounds().Width / 2 + t.GetLocalBounds().Left, -r + t.GetLocalBounds().Height / 2  + t.GetLocalBounds().Top);
@@ -68,21 +57,13 @@ namespace Presentation
 
         public void OnEClicked()
         {
-            FillColor = Color.Green;
-            v += 100;
+            this.FillColor = Color.Green;
         }
 
 
         public void OnQClicked()
         {
-            FillColor = Color.Blue;
-            v -= 100;
-        }
-
-        public void Update(double dt)
-        {
-            x += v * dt / 1000;
-            Position = new SFML.System.Vector2f((float)x, 0);
+            this.FillColor = Color.Blue;
         }
     }
 }
