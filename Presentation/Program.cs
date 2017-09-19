@@ -12,11 +12,11 @@ namespace Presentation
     {
         static void Main(string[] args)
         {
-            MyProgram program = new MyProgram();
-            program.Start();
+            MySFMLProgram program = new MySFMLProgram();
+            program.StartSFMLProgram();
         }
     }
-       
+
 
     class MySFMLProgram
     {
@@ -34,8 +34,8 @@ namespace Presentation
             InitializeWindow();
             AddEvents();
 
-            Line l = new Line(new SFML.System.Vector2f(100, 100), new SFML.System.Vector2f(10, 100), 20);
-            
+            //Line l = new Line(new SFML.System.Vector2f(100, 100), new SFML.System.Vector2f(10, 100), 20);
+
             G = new Graph(4, 10);
             s = new Stack(new Triple(G));
 
@@ -44,7 +44,7 @@ namespace Presentation
                 window.DispatchEvents();
                 window.Clear();
                 window.Draw(G);
-                window.Draw(l);
+                //window.Draw(l);
                 window.Display();
             }
         }
@@ -53,6 +53,12 @@ namespace Presentation
         {
             window = new RenderWindow(new VideoMode(800, 600), "SFML window", Styles.Close, new ContextSettings() { DepthBits = 24, AntialiasingLevel = 2 });
             window.SetFramerateLimit(300);
+            Instructions();
+        }
+
+        void Instructions()
+        {
+            Console.WriteLine("F1 for help!\r\n\r\nF5 to start traveling\r\nF6 generates new graph\r\nuse LMB to pick up a node, use RMB to drop it.");
         }
 
         void AddEvents()
@@ -96,6 +102,9 @@ namespace Presentation
                 case Keyboard.Key.F7:
                     Console.WriteLine("F7");
                     s.stop = true;
+                    break;
+                case Keyboard.Key.F1:
+                    Instructions();
                     break;
                 default:
                     break;
@@ -163,6 +172,7 @@ namespace Presentation
                     Console.WriteLine(m);
                 }
             }
+
         }
     }
 }
