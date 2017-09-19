@@ -28,42 +28,23 @@ namespace Presentation
             double fps = 60;
             double msForFrame = 1000 / fps;
 
-            double lag = 0;
-            double dt = 0.01;
-
-            double now = 0, previous = 0, elapsed = 0;
-            int sleeptime = 0;
-            int all = 0;
-            double x = 0;
+            double dt = 0.0001;
+            double updateTime = msForFrame;
 
             while (!done)
             {
                 window.DispatchEvents();
 
-                now = watch.ElapsedMilliseconds;
-                elapsed = now - previous;
-                previous = now;
-
-                lag += msForFrame;
-
-
-                while (lag > dt)
+                while(updateTime > 0)
                 {
+                    updateTime -= dt;
                     Update(dt);
-                    lag -= dt;
                 }
-
-                x = watch.ElapsedMilliseconds - previous;
-
+                updateTime = msForFrame;
+                
                 window.Clear();
                 Render(window);
                 window.Display();
-
-                sleeptime = (int)(msForFrame - x);
-                if (sleeptime < 0) sleeptime = 0;
-                all += sleeptime;
-
-                Thread.Sleep(sleeptime);
             }
         }
 

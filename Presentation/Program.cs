@@ -12,13 +12,11 @@ namespace Presentation
     {
         static void Main(string[] args)
         {
-            //MySFMLProgram app = new MySFMLProgram();
-            //app.StartSFMLProgram();
-
             MyProgram program = new MyProgram();
             program.Start();
         }
     }
+       
 
     class MySFMLProgram
     {

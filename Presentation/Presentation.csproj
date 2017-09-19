@@ -55,20 +55,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Circle.cs" />
-    <Compile Include="Graph.cs" />
-    <Compile Include="IMoveable.cs" />
-    <Compile Include="Line.cs" />
-    <Compile Include="Matrix.cs" />
-    <Compile Include="MyProgram.cs" />
+    <Compile Include="tsp\Circle.cs" />
+    <Compile Include="tsp\Graph.cs" />
+    <Compile Include="game\IMoveable.cs" />
+    <Compile Include="tsp\Line.cs" />
+    <Compile Include="tsp\Matrix.cs" />
+    <Compile Include="game\MyProgram.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SFMLProgram.cs" />
-    <Compile Include="Stack.cs" />
-    <Compile Include="Updatable.cs" />
+    <Compile Include="game\SFMLProgram.cs" />
+    <Compile Include="tsp\Stack.cs" />
+    <Compile Include="game\Updatable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="csfml-audio-2.dll">
